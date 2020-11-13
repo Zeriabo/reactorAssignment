@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "homepage":"https://reactorassignment.netlify.app/",
-=======
-  "homepage":"https://5fae80214c1dee267a262774--reactorassignment.netlify.app",
->>>>>>> 0a3342d8ca805dfd40619da2ed50409d7c3804b3
   "name": "reactorassignment",
   "version": "0.1.0",
   "private": true,
