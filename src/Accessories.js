@@ -1,3 +1,4 @@
+//accessories
 
 import React, { Component } from 'react' 
 import Table from './Table'
@@ -15,29 +16,7 @@ export class INSTOCKVALUE extends React.Component {
       return <div>{this.props.children}</div>
   }
 }
-function checkavail(id){
-  var avail = null;
- 
-  const getAvailData = async () => {
-      
-    const request = await fetch('https://bad-api-assignment.reaktor.com/availability/reps');
-    
-    const data = await request.json();
 
-     data.response.find(function(obj,index){
- 
-      if(obj.id==id)
-      {
-       return obj
-      }
- 
-     })
- 
-
-  };
-
-      
-}
 
 
 export class Accessories extends Component {  
@@ -45,24 +24,38 @@ export class Accessories extends Component {
     super(props);
     
     this.state = {
-        avail:[],
+        filtered:[],
         accessories: [],
         value:""
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sethandleChange= this.sethandleChange.bind(this);
 }
 
+handleChange(e) {
+  e.preventDefault();
 
-handleChange(event) {   
-   this.setState({value: event.target.value}); 
-   console.log(this.state.value) 
-
-this.state.avail=this.state.shirts.filter(obj => {
-  obj.name.includes("EW")
+  this.setState({
+      value: e.target.value.toUpperCase()
+  });
  
-})
-  console.log(this.state.avail)
-} 
+ this.sethandleChange(this.state.value)
+}
+sethandleChange(searchedVal){
+
+  var a=this.state.accessories.filter((obj) => 
+    obj.name.includes(searchedVal)
+   
+  );
+ 
+  this.setState({filtered:a})
+}
+handleSubmit(e) {
+  e.preventDefault();
+ 
+}
+
      
   componentDidMount() {
 
@@ -71,9 +64,13 @@ this.state.avail=this.state.shirts.filter(obj => {
  const getAccessoriesData = async () => {
  var  manuArray =[]
  var jkNew = []
- var avaiArray = []
+ var avaiArray = [{},{},{},{},{}]
  var objArray = {}
-    const request = await fetch('https://bad-api-assignment.reaktor.com/products/accessories');
+    const request = await fetch('https://bad-api-assignment.reaktor.com/products/accessories', {
+      headers: {
+        'x-force-error-mode':'all'
+        },
+  });
   
     const jk = await request.json();
 
@@ -81,7 +78,7 @@ this.state.avail=this.state.shirts.filter(obj => {
     if(!manuArray.includes(element.manufacturer)){
       manuArray.push(element.manufacturer)
       }
- // const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+element.manufacturer);
+
   
 });
 //Array(5) [ "derp", "abiplos", "nouke", "reps", "xoon" ]
@@ -104,16 +101,15 @@ for(var i= 0; i < manuArray.length; i++)
 objArray = availman.response
 
   avaiArray.push(objArray) //avaiArray is the available manufactures arrays 
- 
+
 }
-var r = ''
-var d = "}'"
-var re = "return "
-console.log(avaiArray)
+
+var re = ""
+
 //go threw jk data and check the manufacture then search in the corresponding array and get the data by the right id
 jk.forEach(element => {
  var  mun = element.manufacturer
-if(mun === 'derp'){ 
+if(mun === 'derp' && avaiArray[0].length>0){ 
 
   var __FOUND=  avaiArray[0].find(function(product,index)
 
@@ -121,15 +117,11 @@ if(mun === 'derp'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+  
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
@@ -147,11 +139,10 @@ if(mun === 'derp'){
     
     
 
-   // return __FOUND
   });
  
 }else
-if(mun === 'abiplos'){ 
+if(mun === 'abiplos'&& avaiArray[1].length>0){ 
 
   var __FOUND=  avaiArray[1].find(function(product,index)
 
@@ -159,15 +150,12 @@ if(mun === 'abiplos'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+ 
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
+  
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
@@ -185,11 +173,11 @@ if(mun === 'abiplos'){
     
     
 
-   // return __FOUND
+   
   });
  
 } else 
-if(mun === 'nouke'){ 
+if(mun === 'nouke' && avaiArray[2].length>0){ 
 
   var __FOUND=  avaiArray[2].find(function(product,index)
 
@@ -197,15 +185,10 @@ if(mun === 'nouke'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
@@ -223,27 +206,23 @@ if(mun === 'nouke'){
     
     
 
-   // return __FOUND
+
   });
  
-}else if(mun === 'reps'){ 
+}else if(mun === 'reps' && avaiArray[3].length>0){ 
 
-  var __FOUND=  avaiArray[3].find(function(product,index)
+   avaiArray[3].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
-  
+ 
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
       //<AVAILABILITY><INSTOCKVALUE>iii </INSTOCKVALUE></AVAILABILITY>
@@ -263,7 +242,7 @@ if(mun === 'nouke'){
    // return __FOUND
   });
  
-}else if(mun === 'xoon'){ 
+}else if(mun === 'xoon' && avaiArray[4].length>0){ 
 
   var __FOUND=  avaiArray[4].find(function(product,index)
 
@@ -271,15 +250,12 @@ if(mun === 'nouke'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+   
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
+ 
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
@@ -297,7 +273,7 @@ if(mun === 'nouke'){
     
     
 
-   // return __FOUND
+  
   });
  
 }
@@ -308,43 +284,54 @@ else jkNew.push(element)
 
 })
 
+function compare( a, b ) {
+  if ( a.manufacturer < b.manufacturer){
+    return -1;
+  }
+  if ( a.manufacturer> b.manufacturer ){
+    return 1;
+  }
+  return 0;
+}
 
+jkNew.sort( compare );
 
     return jkNew
      
   };
   
-  getAccessoriesData().then((data)=>this.setState({'accessories':data}))//Jackets
+  getAccessoriesData().then((data)=>this.setState({'accessories':data}))//Accessories
   
 
 
     }
  
-    // var result = jsObjects.filter(obj => {
-    //   return obj.b === 6
-    // })
-    // this.state.jackets.filter(obj => {
-    //   return obj.name === event.target.value
-    // }).bind(this)
+   
     
 
       
     render() {  
-   
+      //datatoDisplay to check if filtered or original data will be shown
+   let datatoDisplay = (this.state.filtered && this.state.filtered.length>0)?this.state.filtered: this.state.accessories
         return (  
              <div>
           
-      <AVAILABILITY><INSTOCKVALUE>How do I display this text?</INSTOCKVALUE> </AVAILABILITY>  
-          <p>Heres the table of Accessories</p>
-          <form>
-  <label>
-    Search:
-    <input type="text" name="name" onChange={this.handleChange}/>
-  </label>
-
-</form>
+       
+          <p>Heres the table of Accessories You can start typing to search for a name</p>
+          <div>
+            <form onSubmit={this.handleSubmit}>
+                <input 
+                    type='text'
+                    name='task'
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                />
+               
+            </form>
+        </div>
 <div >
-<Table catagory={ this.state.accessories } />
+  
+<Table catagory={ datatoDisplay } />
            </div>
              </div>
             

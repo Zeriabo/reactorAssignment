@@ -1,3 +1,4 @@
+//accessories
 
 import React, { Component } from 'react' 
 import Table from './Table'
@@ -15,64 +16,46 @@ export class INSTOCKVALUE extends React.Component {
       return <div>{this.props.children}</div>
   }
 }
-function checkavail(id){
-  var avail = null;
- 
-  const getAvailData = async () => {
-      
-    const request = await fetch('https://bad-api-assignment.reaktor.com/availability/reps',{
-
-  
-      headers: {
-        'x-force-error-mode': 'all',
-      }
-    });
-    
-    const data = await request.json();
-
-     data.response.find(function(obj,index){
- 
-      if(obj.id==id)
-      {
-       return obj
-      }
- 
-     })
- 
-
-  };
-
-      
-}
 
 
-export class Jackets extends Component 
-{  
+
+export class Jackets extends Component {  
   constructor(props) {
     super(props);
     
     this.state = {
-        avail:[],
+        filtered:[],
         jackets: [],
         value:""
     };
-    
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sethandleChange= this.sethandleChange.bind(this);
 }
-add = () => {
-  console.log(this.state.value)
-  var update = this.state.jackets.filter(jacket=>  jacket.name==this.state.value)
+
+handleChange(e) {
+  e.preventDefault();
+
   this.setState({
-    jacket: update
- 
-  })
-}
-onInputchange(event) {
-  event.preventDefault();
-  this.setState({
-    value: event.target.value
+      value: e.target.value.toUpperCase()
   });
-  
+ 
+ this.sethandleChange(this.state.value)
 }
+sethandleChange(searchedVal){
+
+  var a=this.state.jackets.filter((obj) => 
+    obj.name.includes(searchedVal)
+   
+  );
+ 
+  this.setState({filtered:a})
+}
+handleSubmit(e) {
+  e.preventDefault();
+ 
+}
+
      
   componentDidMount() {
 
@@ -81,15 +64,13 @@ onInputchange(event) {
  const getJacketsData = async () => {
  var  manuArray =[]
  var jkNew = []
- var avaiArray = []
+ var avaiArray = [{},{},{},{},{}]
  var objArray = {}
-    const request = await fetch('https://bad-api-assignment.reaktor.com/products/jackets',{
-
-
+    const request = await fetch('https://bad-api-assignment.reaktor.com/products/jackets', {
       headers: {
-        'x-force-error-mode': 'all',
-      }
-    });
+        'x-force-error-mode':'all'
+        },
+  });
   
     const jk = await request.json();
 
@@ -97,7 +78,7 @@ onInputchange(event) {
     if(!manuArray.includes(element.manufacturer)){
       manuArray.push(element.manufacturer)
       }
- // const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+element.manufacturer);
+
   
 });
 //Array(5) [ "derp", "abiplos", "nouke", "reps", "xoon" ]
@@ -111,7 +92,7 @@ for(var m in manuArray) //manuArray is the array of names of the manufactures  r
 for(var i= 0; i < manuArray.length; i++)
 {  
   var nam =manuArray[i].toString()
-  //cache must be in the original api address
+  
   const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+manuArray[i]);
   const availman = await request2.json()
   var name = manuArray[i]
@@ -124,10 +105,11 @@ objArray = availman.response
 }
 
 var re = ""
+
 //go threw jk data and check the manufacture then search in the corresponding array and get the data by the right id
 jk.forEach(element => {
  var  mun = element.manufacturer
-if(mun === 'derp'){ 
+if(mun === 'derp' && avaiArray[0].length>0){ 
 
   var __FOUND=  avaiArray[0].find(function(product,index)
 
@@ -135,15 +117,11 @@ if(mun === 'derp'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+  
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
@@ -161,11 +139,10 @@ if(mun === 'derp'){
     
     
 
-   // return __FOUND
   });
  
 }else
-if(mun === 'abiplos'){ 
+if(mun === 'abiplos'&& avaiArray[1].length>0){ 
 
   var __FOUND=  avaiArray[1].find(function(product,index)
 
@@ -173,15 +150,12 @@ if(mun === 'abiplos'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+ 
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
+  
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
@@ -199,24 +173,23 @@ if(mun === 'abiplos'){
     
     
 
-   // return __FOUND
+   
   });
  
 } else 
 if(mun === 'nouke' && avaiArray[2].length>0){ 
 
-  var __FOUND= (avaiArray[2].length!=0)? avaiArray[2].find(function(product,index)
+  var __FOUND=  avaiArray[2].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-   
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-
+  
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
       //<AVAILABILITY><INSTOCKVALUE>iii </INSTOCKVALUE></AVAILABILITY>
@@ -225,7 +198,7 @@ if(mun === 'nouke' && avaiArray[2].length>0){
       obj.name=element.name
       obj.manufacturer=element.manufacturer
       obj.type=element.type
-      obj.color= element.color.join()
+      obj.color= element.color
       obj.price= element.price
     obj.avaibility = re
      jkNew.push(obj) 
@@ -233,27 +206,23 @@ if(mun === 'nouke' && avaiArray[2].length>0){
     
     
 
-   // return __FOUND
-  }):null
+
+  });
  
 }else if(mun === 'reps' && avaiArray[3].length>0){ 
 
-  var __FOUND=  avaiArray[3].find(function(product,index)
+   avaiArray[3].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
-    re = product.DATAPAYLOAD
-    re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
-    re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
-  
+    re = product.DATAPAYLOAD
+  re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
+  re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
+
+ 
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
       //<AVAILABILITY><INSTOCKVALUE>iii </INSTOCKVALUE></AVAILABILITY>
@@ -281,7 +250,7 @@ if(mun === 'nouke' && avaiArray[2].length>0){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-
+   
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
@@ -290,21 +259,21 @@ if(mun === 'nouke' && avaiArray[2].length>0){
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
-    
+      //<AVAILABILITY><INSTOCKVALUE>iii </INSTOCKVALUE></AVAILABILITY>
       var obj={}
       obj.id=element.id
       obj.name=element.name
       obj.manufacturer=element.manufacturer
       obj.type=element.type
-      obj.color= element.color
+      obj.color= element.color.join()
       obj.price= element.price
-      obj.avaibility = re
+    obj.avaibility = re
      jkNew.push(obj) 
     }
     
     
 
-   // return __FOUND
+  
   });
  
 }
@@ -315,9 +284,8 @@ else jkNew.push(element)
 
 })
 
-
 function compare( a, b ) {
-  if ( a.manufacturer< b.manufacturer ){
+  if ( a.manufacturer < b.manufacturer){
     return -1;
   }
   if ( a.manufacturer> b.manufacturer ){
@@ -326,52 +294,44 @@ function compare( a, b ) {
   return 0;
 }
 
-//jkNew=  jkNew.sort(compare)
-console.log(this.state.value)
-return (this.state.value=="")?jkNew:jkNew.filter(jacket=>  jacket.name==this.state.value)
+jkNew.sort( compare );
 
-
+    return jkNew
      
   };
   
   getJacketsData().then((data)=>this.setState({'jackets':data}))//Jackets
- // getJacketsData().onChange().then((data=>this.setState({'jackets':data})))
+  
 
 
     }
+ 
    
-    //  handleClick (event) {
-    //   // Update our state here...
-    //   alert("Here i am")
-    //  onChange(n)
-    //   function onChange(nam)
-    // {
-      
-    //   var newJackets = jkNew.filter(jacket=>  jacket.name==nam)
     
-    //   return this.state.jackets= newJackets
-    // }
-    // };
-
-
 
       
     render() {  
-   
+      //datatoDisplay to check if filtered or original data will be shown
+   let datatoDisplay = (this.state.filtered && this.state.filtered.length>0)?this.state.filtered: this.state.jackets
         return (  
              <div>
           
-      <AVAILABILITY><INSTOCKVALUE>How do I display this text?</INSTOCKVALUE> </AVAILABILITY>  
-          <p>Heres the table of Jackets</p>
-          <form onSubmit={this.add.bind(this)}>
-  <label>
-    Search:
-    <input type="text" name="name"  onChange={this.onInputchange.bind(this)}  />
-  </label>
-  <input type="submit" value="Submit" />
-</form>
+       
+          <p>Heres the table of Jackets You can start typing to search for a name</p>
+          <div>
+            <form onSubmit={this.handleSubmit}>
+                <input 
+                    type='text'
+                    name='task'
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                />
+               
+            </form>
+        </div>
 <div >
-<Table catagory={ this.state.jackets } />
+  
+<Table catagory={ datatoDisplay } />
            </div>
              </div>
             

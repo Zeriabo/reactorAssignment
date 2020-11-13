@@ -15,33 +15,6 @@ export class INSTOCKVALUE extends React.Component {
       return <div>{this.props.children}</div>
   }
 }
-function checkavail(id){
-  var avail = null;
- 
-  const getAvailData = async () => {
-      
-    const request = await fetch('https://bad-api-assignment.reaktor.com/availability/reps', {
-      headers: {
-        'x-force-error-mode':'all'
-        },
-  });
-    
-    const data = await request.json();
-
-     data.response.find(function(obj,index){
- 
-      if(obj.id==id)
-      {
-       return obj
-      }
- 
-     })
- 
-
-  };
-
-      
-}
 
 
 export class Shirts extends Component {  
@@ -89,7 +62,7 @@ handleSubmit(e) {
  const getShirtsData = async () => {
  var  manuArray =[]
  var jkNew = []
- var avaiArray = []
+ var avaiArray = [{},{},{},{},{}]
  var objArray = {}
     const request = await fetch('https://bad-api-assignment.reaktor.com/products/shirts', {
       headers: {
@@ -126,7 +99,7 @@ for(var i= 0; i < manuArray.length; i++)
 objArray = availman.response
 
   avaiArray.push(objArray) //avaiArray is the available manufactures arrays 
-console.log(avaiArray)
+
 }
 
 var re = ""
@@ -134,7 +107,7 @@ var re = ""
 //go threw jk data and check the manufacture then search in the corresponding array and get the data by the right id
 jk.forEach(element => {
  var  mun = element.manufacturer
-if(mun === 'derp'){ 
+if(mun === 'derp' && avaiArray[0].length>0){ 
 
   var __FOUND=  avaiArray[0].find(function(product,index)
 
@@ -167,7 +140,7 @@ if(mun === 'derp'){
   });
  
 }else
-if(mun === 'abiplos'){ 
+if(mun === 'abiplos'&& avaiArray[1].length>0){ 
 
   var __FOUND=  avaiArray[1].find(function(product,index)
 
@@ -202,7 +175,7 @@ if(mun === 'abiplos'){
   });
  
 } else 
-if(mun === 'nouke'){ 
+if(mun === 'nouke' && avaiArray[2].length>0){ 
 
   var __FOUND=  avaiArray[2].find(function(product,index)
 
@@ -267,7 +240,7 @@ if(mun === 'nouke'){
    // return __FOUND
   });
  
-}else if(mun === 'xoon'){ 
+}else if(mun === 'xoon' && avaiArray[4].length>0){ 
 
   var __FOUND=  avaiArray[4].find(function(product,index)
 
@@ -325,7 +298,7 @@ jkNew.sort( compare );
      
   };
   
-  getShirtsData().then((data)=>this.setState({'shirts':data}))//Jackets
+  getShirtsData().then((data)=>this.setState({'shirts':data}))//Shirts
   
 
 
@@ -336,6 +309,7 @@ jkNew.sort( compare );
 
       
     render() {  
+      //datatoDisplay to check if filtered or original data will be shown
    let datatoDisplay = (this.state.filtered && this.state.filtered.length>0)?this.state.filtered: this.state.shirts
         return (  
              <div>
