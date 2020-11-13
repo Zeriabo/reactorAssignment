@@ -9,6 +9,7 @@ const Table = ({catagory}) => {
           <th>Name</th>
           <th>Manufacturer</th>
           <th>type</th>
+
           <th>color</th>
           <th>price</th>
           <th>Avaibility</th>
@@ -21,8 +22,11 @@ const Table = ({catagory}) => {
               <td>{ cata.id }</td>
               <td>{ cata.name }</td>
               <td>{ cata.manufacturer}</td>
+           
               <td>{ cata.type }</td>
+  
               <td>{ cata.color }</td>
+       
               <td>{ cata.price }</td>
            <td>{cata.avaibility}</td>
             </tr>

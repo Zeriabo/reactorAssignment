@@ -20,7 +20,13 @@ function checkavail(id){
  
   const getAvailData = async () => {
       
-    const request = await fetch('https://bad-api-assignment.reaktor.com/availability/reps');
+    const request = await fetch('https://bad-api-assignment.reaktor.com/availability/reps',{
+
+  
+      headers: {
+        'x-force-error-mode': 'all',
+      }
+    });
     
     const data = await request.json();
 
@@ -40,7 +46,8 @@ function checkavail(id){
 }
 
 
-export class Jackets extends Component {  
+export class Jackets extends Component 
+{  
   constructor(props) {
     super(props);
     
@@ -49,20 +56,23 @@ export class Jackets extends Component {
         jackets: [],
         value:""
     };
-    this.handleChange = this.handleChange.bind(this);
+    
 }
-
-
-handleChange(event) {   
-   this.setState({value: event.target.value}); 
-   console.log(this.state.value) 
-
-this.state.avail=this.state.jackets.filter(obj => {
-  obj.name.includes("EW")
+add = () => {
+  console.log(this.state.value)
+  var update = this.state.jackets.filter(jacket=>  jacket.name==this.state.value)
+  this.setState({
+    jacket: update
  
-})
-  console.log(this.state.avail)
-} 
+  })
+}
+onInputchange(event) {
+  event.preventDefault();
+  this.setState({
+    value: event.target.value
+  });
+  
+}
      
   componentDidMount() {
 
@@ -73,7 +83,13 @@ this.state.avail=this.state.jackets.filter(obj => {
  var jkNew = []
  var avaiArray = []
  var objArray = {}
-    const request = await fetch('https://bad-api-assignment.reaktor.com/products/jackets');
+    const request = await fetch('https://bad-api-assignment.reaktor.com/products/jackets',{
+
+
+      headers: {
+        'x-force-error-mode': 'all',
+      }
+    });
   
     const jk = await request.json();
 
@@ -95,7 +111,7 @@ for(var m in manuArray) //manuArray is the array of names of the manufactures  r
 for(var i= 0; i < manuArray.length; i++)
 {  
   var nam =manuArray[i].toString()
-  
+  //cache must be in the original api address
   const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+manuArray[i]);
   const availman = await request2.json()
   var name = manuArray[i]
@@ -104,7 +120,7 @@ for(var i= 0; i < manuArray.length; i++)
 objArray = availman.response
 
   avaiArray.push(objArray) //avaiArray is the available manufactures arrays 
- 
+
 }
 
 var re = ""
@@ -187,24 +203,20 @@ if(mun === 'abiplos'){
   });
  
 } else 
-if(mun === 'nouke'){ 
+if(mun === 'nouke' && avaiArray[2].length>0){ 
 
-  var __FOUND=  avaiArray[2].find(function(product,index)
+  var __FOUND= (avaiArray[2].length!=0)? avaiArray[2].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+   
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
-  
+
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
       //<AVAILABILITY><INSTOCKVALUE>iii </INSTOCKVALUE></AVAILABILITY>
@@ -213,7 +225,7 @@ if(mun === 'nouke'){
       obj.name=element.name
       obj.manufacturer=element.manufacturer
       obj.type=element.type
-      obj.color= element.color
+      obj.color= element.color.join()
       obj.price= element.price
     obj.avaibility = re
      jkNew.push(obj) 
@@ -222,9 +234,9 @@ if(mun === 'nouke'){
     
 
    // return __FOUND
-  });
+  }):null
  
-}else if(mun === 'reps'){ 
+}else if(mun === 'reps' && avaiArray[3].length>0){ 
 
   var __FOUND=  avaiArray[3].find(function(product,index)
 
@@ -234,8 +246,8 @@ if(mun === 'nouke'){
  
     //console.log(r)
     re = product.DATAPAYLOAD
-  re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
-  re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
+    re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
+    re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
    // console.log(re)
     //console.log(typeof product.DATAPAYLOAD)
@@ -261,7 +273,7 @@ if(mun === 'nouke'){
    // return __FOUND
   });
  
-}else if(mun === 'xoon'){ 
+}else if(mun === 'xoon' && avaiArray[4].length>0){ 
 
   var __FOUND=  avaiArray[4].find(function(product,index)
 
@@ -269,19 +281,16 @@ if(mun === 'nouke'){
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
 
  
-    //console.log(r)
+
     re = product.DATAPAYLOAD
   re = re.replace("<AVAILABILITY>  <INSTOCKVALUE>","")
   re = re.replace("</INSTOCKVALUE></AVAILABILITY>","")
 
-   // console.log(re)
-    //console.log(typeof product.DATAPAYLOAD)
-    //var len= product.DATAPAYLOAD.length
-     //console.log(eval(re))
+ 
   
   if(product.id.toLowerCase() ===element.id)
     {//element.id,element.manufacturer,element.name,element.type,element.color,element.price,product.DATAPAYLOAD
-      //<AVAILABILITY><INSTOCKVALUE>iii </INSTOCKVALUE></AVAILABILITY>
+    
       var obj={}
       obj.id=element.id
       obj.name=element.name
@@ -289,7 +298,7 @@ if(mun === 'nouke'){
       obj.type=element.type
       obj.color= element.color
       obj.price= element.price
-    obj.avaibility = re
+      obj.avaibility = re
      jkNew.push(obj) 
     }
     
@@ -307,24 +316,44 @@ else jkNew.push(element)
 })
 
 
+function compare( a, b ) {
+  if ( a.manufacturer< b.manufacturer ){
+    return -1;
+  }
+  if ( a.manufacturer> b.manufacturer ){
+    return 1;
+  }
+  return 0;
+}
 
-    return jkNew
+//jkNew=  jkNew.sort(compare)
+console.log(this.state.value)
+return (this.state.value=="")?jkNew:jkNew.filter(jacket=>  jacket.name==this.state.value)
+
+
      
   };
   
   getJacketsData().then((data)=>this.setState({'jackets':data}))//Jackets
-  
+ // getJacketsData().onChange().then((data=>this.setState({'jackets':data})))
 
 
     }
- 
-    // var result = jsObjects.filter(obj => {
-    //   return obj.b === 6
-    // })
-    // this.state.jackets.filter(obj => {
-    //   return obj.name === event.target.value
-    // }).bind(this)
+   
+    //  handleClick (event) {
+    //   // Update our state here...
+    //   alert("Here i am")
+    //  onChange(n)
+    //   function onChange(nam)
+    // {
+      
+    //   var newJackets = jkNew.filter(jacket=>  jacket.name==nam)
     
+    //   return this.state.jackets= newJackets
+    // }
+    // };
+
+
 
       
     render() {  
@@ -334,12 +363,12 @@ else jkNew.push(element)
           
       <AVAILABILITY><INSTOCKVALUE>How do I display this text?</INSTOCKVALUE> </AVAILABILITY>  
           <p>Heres the table of Jackets</p>
-          <form>
+          <form onSubmit={this.add.bind(this)}>
   <label>
     Search:
-    <input type="text" name="name" onChange={this.handleChange}/>
+    <input type="text" name="name"  onChange={this.onInputchange.bind(this)}  />
   </label>
-
+  <input type="submit" value="Submit" />
 </form>
 <div >
 <Table catagory={ this.state.jackets } />

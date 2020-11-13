@@ -289,7 +289,7 @@ if(mun === 'nouke'){
       obj.name=element.name
       obj.manufacturer=element.manufacturer
       obj.type=element.type
-      obj.color= element.color
+      obj.color= element.color.join()
       obj.price= element.price
     obj.avaibility = re
      jkNew.push(obj) 
