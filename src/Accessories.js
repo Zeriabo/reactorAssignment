@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react' 
 import Table from './Table'
-import apicache from 'apicache'
+//import apicache from 'apicache'
 
-let cache = apicache.middleware
+//let cache = apicache.middleware
 
 export class AVAILABILITY extends React.Component {
   render() {
@@ -82,21 +82,15 @@ handleSubmit(e) {
   
 });
 //Array(5) [ "derp", "abiplos", "nouke", "reps", "xoon" ]
-for(var m in manuArray) //manuArray is the array of names of the manufactures  reps abiplos nouke derp xoon
-{ 
- 
-  var nam = m.toString()
-  nam = new Array()
 
-}
 for(var i= 0; i < manuArray.length; i++)
 {  
-  var nam =manuArray[i].toString()
+
   
   const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+manuArray[i]);
   const availman = await request2.json()
-  var name = manuArray[i]
- name = new Array()
+
+
  
 objArray = availman.response
 
@@ -111,7 +105,7 @@ jk.forEach(element => {
  var  mun = element.manufacturer
 if(mun === 'derp' && avaiArray[0].length>0){ 
 
-  var __FOUND=  avaiArray[0].find(function(product,index)
+ avaiArray[0].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
@@ -137,14 +131,14 @@ if(mun === 'derp' && avaiArray[0].length>0){
      jkNew.push(obj) 
     }
     
-    
+    return jkNew
 
   });
  
 }else
 if(mun === 'abiplos'&& avaiArray[1].length>0){ 
 
-  var __FOUND=  avaiArray[1].find(function(product,index)
+ avaiArray[1].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
@@ -172,14 +166,14 @@ if(mun === 'abiplos'&& avaiArray[1].length>0){
     }
     
     
-
+return jkNew
    
   });
  
 } else 
 if(mun === 'nouke' && avaiArray[2].length>0){ 
 
-  var __FOUND=  avaiArray[2].find(function(product,index)
+   avaiArray[2].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
@@ -205,7 +199,7 @@ if(mun === 'nouke' && avaiArray[2].length>0){
     }
     
     
-
+return jkNew
 
   });
  
@@ -237,14 +231,14 @@ if(mun === 'nouke' && avaiArray[2].length>0){
      jkNew.push(obj) 
     }
     
-    
+    return jkNew
 
    // return __FOUND
   });
  
 }else if(mun === 'xoon' && avaiArray[4].length>0){ 
 
-  var __FOUND=  avaiArray[4].find(function(product,index)
+ avaiArray[4].find(function(product,index)
 
   { 
      product.DATAPAYLOAD= product.DATAPAYLOAD.replace(/(\r\n|\n|\r)/gm,"");
@@ -272,7 +266,7 @@ if(mun === 'nouke' && avaiArray[2].length>0){
     }
     
     
-
+return jkNew
   
   });
  
