@@ -12,7 +12,7 @@
   publish = "build/"
 
   # Default build command.
-  command = "yarn build'"
+  command = "yarn run build'"
 
 
 
@@ -20,7 +20,7 @@
 # deploy contexts will inherit these settings.
 [context.production]
   publish = "build/"
-  command = "yarn build"
+  command = "yarn run build"
   environment = { ACCESS_TOKEN = "super secret", NODE_VERSION = "14.7.0" }
 
 # Deploy Preview context: all deploys generated from a pull/merge request will
