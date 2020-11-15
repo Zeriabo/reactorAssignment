@@ -66,8 +66,10 @@ handleSubmit(e) {
  var jkNew = []
  var avaiArray = [{},{},{},{},{}]
  var objArray = {}
-    const request = await fetch('https://bad-api-assignment.reaktor.com/products/accessories', {
+    const request = await fetch('https://bad-api-assignment.reaktor.com/products/accessories',
+     {
       headers: {
+        cache: "default",
         'x-force-error-mode':'all'
         },
   });
@@ -87,7 +89,13 @@ for(var i= 0; i < manuArray.length; i++)
 {  
 
   
-  const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+manuArray[i]);
+  const request2 = await fetch('https://bad-api-assignment.reaktor.com/availability/'+manuArray[i],
+  {
+   headers: {
+     cache: "default",
+     'x-force-error-mode':'all'
+     },
+});
   const availman = await request2.json()
 
 
