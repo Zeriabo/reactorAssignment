@@ -1,14 +1,18 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter,Redirect } from 'react-router-dom';
-import App from './App'
+import { Switch, Route,Redirect } from 'react-router-dom';
 import Shirts from './Shirts'
 import Jackets from './Jackets'
 import Accessories from './Accessories'
 import Store from './Store'
 
 
-const Router = (props) => (<BrowserRouter><Switch>
-    <Redirect from="/" to="/Store" />
+const Router = (props) => (<Switch>
+    <Route path="/" exact>
+    <Redirect to="/Store" />
+</Route>
+<Route path="/Home" exact>
+    <Redirect to="/Store" />
+</Route>
     <Route exact path='/' component={Store}/>
     <Route path="/Home" component={Store} />
     <Route path="/Shirts" component={Shirts} />
@@ -20,5 +24,5 @@ const Router = (props) => (<BrowserRouter><Switch>
 
     
 
-    </Switch></BrowserRouter>)
+    </Switch>)
 export default Router;

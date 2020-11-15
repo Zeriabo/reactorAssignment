@@ -43,4 +43,4 @@ export class Store extends Component {
     }  
 }  
   
-export default withRouter(Store) 
+export default Store
