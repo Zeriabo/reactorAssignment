@@ -17,7 +17,7 @@ export class Store extends Component {
                       
                          <ul className="nav navbar-nav ml-auto">
                             <li className="nav-item" role="presentation">
-                                <div><a className="nav-link" href="/App">Home</a></div></li>
+                                <div><a className="nav-link" href="/Store">Home</a></div></li>
                                 <li className="nav-item" role="presentation">
                                 <div><a className="nav-link" href="/Jackets">Jackets</a></div></li>
                                 <li className="nav-item" role="presentation">
