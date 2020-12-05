@@ -19,9 +19,9 @@ export class Store extends Component {
                             <li className="nav-item" role="presentation">
                                 <div><a className="nav-link" href="/Store">Home</a></div></li>
                                 <li className="nav-item" role="presentation">
-                                <div><a className="nav-link" href="/Jackets">Jackets</a></div></li>
+                                <div><a className="nav-link" href="/jackets">Jackets</a></div></li>
                                 <li className="nav-item" role="presentation">
-                                <div><a className="nav-link" href="./Shirts">Shirts</a></div></li>
+                                <div><a className="nav-link" href="./shirts">Shirts</a></div></li>
                                 <li className="nav-item" role="presentation">
                                 <div><a className="nav-link" href="./Accessories">Accessories</a></div></li>
                             

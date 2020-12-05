@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route,Redirect } from 'react-router-dom';
-import Shirts from './Shirts'
-import Jackets from './Jackets'
+import Cloths from './Cloths'
 import Accessories from './Accessories'
 import Store from './Store'
 
@@ -15,9 +14,13 @@ const Router = (props) => (<Switch>
 </Route>
     <Route exact path='/' component={Store}/>
     <Route path="/Home" component={Store} />
-    <Route path="/Shirts" component={Shirts} />
-    <Route path="/Jackets" component={Jackets} />
-    <Route path="/Accessories" component={Accessories} />
+    <Route path="/shirts" render={(props) => (
+    <Cloths {...props} type={"shirts"} />
+  )}/>
+    <Route path="/jackets" render={(props) => (
+    <Cloths {...props} type={"jackets"} />
+  )}/>
+    <Route path="/Accessories" component={Accessories } />
 
   
 
